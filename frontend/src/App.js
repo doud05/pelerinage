@@ -1,66 +1,58 @@
-import logo from './logo.svg';
-import './App.css';
-
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function App() {
-    // Déclarations des hooks pour l'état des clients, le chargement, et les erreurs
+    // Déclaration des états pour les clients, le chargement, et les erreurs
     const [clients, setClients] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // useEffect pour récupérer les données des clients depuis l'API
+    // Utilisation de useEffect pour faire l'appel API lors du montage du composant
     useEffect(() => {
-        const fetchClients = async () => {
-            try {
-                const response = await axios.get('http://localhost:5000/api/clients');
-                setClients(response.data);
-                setLoading(false);
-            } catch (err) {
-                console.error('Erreur lors de la récupération des clients:', err);
+        console.log('Tentative de récupération des clients...');
+        
+        // Utilisation de fetch ou axios pour faire la requête GET
+        fetch('http://localhost:5000/api/clients')
+            .then((response) => {
+                console.log('Réponse reçue:', response);
+                if (!response.ok) {
+                    throw new Error('Erreur lors de la récupération des clients');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log('Données reçues:', data);
+                setClients(data); // Mise à jour de l'état clients avec les données reçues
+                setLoading(false); // Arrêt du chargement
+            })
+            .catch((error) => {
+                console.error('Erreur :', error);
                 setError('Erreur lors de la récupération des clients');
                 setLoading(false);
-            }
-        };
-
-        fetchClients();
+            });
     }, []);
 
+    // Affichage pendant le chargement
     if (loading) {
         return <div>Chargement des données...</div>;
     }
 
+    // Affichage en cas d'erreur
     if (error) {
         return <div>{error}</div>;
     }
 
+    // Affichage des données des clients lorsque tout est prêt
     return (
         <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-                    Edit <code>src/App.js</code> and save to reload.
-                </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
-            </header>
-            <div>
-                <h1>Liste des Clients</h1>
-                <ul>
-                    {clients.map((client) => (
-                        <li key={client.id}>
-                            {client.titre} {client.nom} {client.prenom}
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            <h1>Liste des Clients</h1>
+            <ul>
+                {clients.map((client) => (
+                    <li key={client.id}>
+                        {client.titre} {client.nom} {client.prenom}
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 }
