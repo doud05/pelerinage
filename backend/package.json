@@ -1,18 +1,16 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "Backend for the pelerinages project",
-  "main": "src/index.js",
+  "description": "Backend for the pilgrimage project",
+  "main": "backend/src/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "start": "node backend/src/index.js",
+    "dev": "nodemon backend/src/index.js"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "pg": "^8.13.1"
+    "pg": "^8.6.0",
+    "dotenv": "^10.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"
