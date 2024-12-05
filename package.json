@@ -2,10 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "Backend for the pilgrimage project",
-  "main": "src/index.js",
+  "main": "backend/src/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "start": "node backend/src/index.js",
+    "dev": "nodemon backend/src/index.js"
   },
   "dependencies": {
     "express": "^4.17.1",
