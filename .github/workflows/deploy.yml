@@ -1,4 +1,4 @@
-name: Deploy to Server without SSH key
+name: Deploy to Server
 
 on:
   push:
@@ -10,20 +10,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Vérifie le dépôt
       - name: Checkout the repository
         uses: actions/checkout@v2
 
-      # Déploie le code sur le serveur (avec authentification par mot de passe)
-      - name: Deploy code to server using password
+      - name: Set up SSH for deployment
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}  # Clé privée de l'utilisateur deploy
+
+      - name: Deploy code to server
         run: |
-          expect <<EOF
-          spawn ssh -o StrictHostKeyChecking=no adminuser@152.228.214.11
-          expect "password:"
-          send "YOUR_PASSWORD_HERE\r"
-          expect "$ "
-          send "cd /var/www/pelerinage && git pull origin main && npm install && pm2 restart all\r"
-          expect "$ "
-          send "exit\r"
-          expect eof
-          EOF
+          ssh -o StrictHostKeyChecking=no deploy@152.228.214.11 "
+            cd /var/www/pelerinage &&
+            git pull origin main &&
+            npm install &&
+            pm2 restart all
+          "
