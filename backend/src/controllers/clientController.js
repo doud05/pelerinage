@@ -1,4 +1,4 @@
-const db = require('../config/db');
+const pool = require('../config/db');
 
 // Fonction pour récupérer tous les clients
 const getAllClients = async (req, res) => {
