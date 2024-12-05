@@ -10,14 +10,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Vérifie le dépôt
       - name: Checkout the repository
         uses: actions/checkout@v2
 
+      # Configure l'agent SSH avec la clé privée définie dans les secrets
       - name: Set up SSH for deployment
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      # Déploie le code sur le serveur
       - name: Deploy code to server
         run: |
           ssh -o StrictHostKeyChecking=no adminuser@152.228.214.11 "
