@@ -1,14 +1,12 @@
 const db = require('../config/db');
 
 // Obtenir tous les clients
-const getAllClients = async (req, res) => {
+const getClients = async (req, res) => {
   try {
-    console.log("Tentative de récupération des clients...");
-    const result = await db.query('SELECT * FROM clients');
-    console.log("Récupération réussie : ", result.rows);
-    res.status(200).json(result.rows);
-  } catch (err) {
-    console.error("Erreur lors de la récupération des clients : ", err.message);
+    const result = await pool.query('SELECT * FROM clients');
+    res.status(200).json(result.rows); // Envoie les données sous forme de JSON
+  } catch (error) {
+    console.error('Erreur lors de la récupération des clients :', error);
     res.status(500).send('Erreur serveur');
   }
 };
