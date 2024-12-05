@@ -1,6 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
+const cors = require('cors');
+app.use(cors());  // Ajoute le middleware CORS avant les routes
+
 
 app.use(express.json());
 
