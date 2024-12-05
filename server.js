@@ -3,7 +3,7 @@
 const http = require('http');
 const { exec } = require('child_process'); // Pour exécuter des commandes systèmes
 
-const PORT = 3000; // Tu peux changer le port si nécessaire (par exemple 80 pour HTTP par défaut)
+const PORT = 4000; // Nouveau port choisi pour éviter le conflit avec 3000
 
 http.createServer((req, res) => {
     if (req.method === 'POST' && req.url === '/github-webhook') {
