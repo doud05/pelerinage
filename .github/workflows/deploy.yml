@@ -12,11 +12,16 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v2
+        - name: Test SSH Connection
+  run: |
+    ssh -o StrictHostKeyChecking=no adminuser@152.228.214.11 "echo 'Connexion réussie'"
 
-      - name: Set up SSH for deployment
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Set up SSH for deployment
+  uses: webfactory/ssh-agent@v0.5.3
+  with:
+    ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
 
       - name: Deploy code to server
         run: |
