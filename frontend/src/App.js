@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 function App() {
     // Déclaration des états pour les clients, le chargement, et les erreurs
