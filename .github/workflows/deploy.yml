@@ -10,23 +10,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Check out the repository
       - name: Checkout the repository
         uses: actions/checkout@v2
+
+      # 2. Set up SSH for deployment
+      - name: Set up SSH for deployment
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      
+      # 3. Test SSH connection
       - name: Test SSH Connection
-  run: |
-    ssh -o StrictHostKeyChecking=no adminuser@152.228.214.11 "echo 'Connexion réussie'"
+        run: ssh -o StrictHostKeyChecking=no adminuser@152.228.214.11 "echo 'SSH connection successful'"
 
-    - name: Set up SSH for deployment
-  uses: webfactory/ssh-agent@v0.5.3
-  with:
-    ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-
+      # 4. Deploy code to server
       - name: Deploy code to server
         run: |
-          ssh -o StrictHostKeyChecking=no adminuser@152.228.214.11 "
-            cd /var/www/pelerinage &&
-            git pull origin main &&
-            npm install &&
-            pm2 restart all
-          "
+          ssh -o StrictHostKeyChecking=no adminuser@152.228.214.11 << 'EOF'
+            set -e  # Arrêter le script en cas d'erreur
+
+            echo 'Naviguer vers le répertoire de l'application'
+            cd /var/www/pelerinage || exit 1
+
+            echo 'Mettre à jour le code avec git pull'
+            git pull origin main || exit 1
+
+            echo 'Installer les dépendances avec npm'
+            npm install || exit 1
+
+            echo 'Redémarrer les services avec PM2'
+            pm2 restart all || exit 1
+          EOF
