@@ -1,13 +1,13 @@
-require('dotenv').config();  // Charger les variables d'environnement
-const { Pool } = require('pg');  // Importer le Pool de pg
+const { Pool } = require('pg');
+require('dotenv').config();
 
 const pool = new Pool({
-  user: process.env.DB_USER,         // Utilisateur de la base de données
-  host: process.env.DB_HOST,         // Hôte de la base de données
-  database: process.env.DB_NAME,     // Nom de la base de données
-  password: process.env.DB_PASSWORD, // Mot de passe de la base de données
-  port: process.env.DB_PORT,         // Port de la base de données
-  ssl: { rejectUnauthorized: false } // Ajouter cette ligne si SSL est nécessaire
+    user: process.env.DB_USER, // Par exemple : 'doud'
+    host: process.env.DB_HOST, // Par exemple : 'le455538-001.eu.clouddb.ovh.net'
+    database: process.env.DB_NAME, // Par exemple : 'pelerinages-db'
+    password: process.env.DB_PASSWORD, // Mot de passe de l'utilisateur PostgreSQL
+    port: process.env.DB_PORT, // Par exemple : 35439
+    ssl: { rejectUnauthorized: false } // Ajouter cette ligne si SSL est nécessaire
 });
 
 module.exports = {
