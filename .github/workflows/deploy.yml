@@ -1,4 +1,4 @@
-name: Deploy to Server
+name: Deploy to Server without SSH key
 
 on:
   push:
@@ -14,18 +14,16 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v2
 
-      # Configure l'agent SSH avec la clé privée définie dans les secrets
-      - name: Set up SSH for deployment
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      # Déploie le code sur le serveur
-      - name: Deploy code to server
+      # Déploie le code sur le serveur (avec authentification par mot de passe)
+      - name: Deploy code to server using password
         run: |
-          ssh -o StrictHostKeyChecking=no adminuser@152.228.214.11 "
-            cd /var/www/pelerinage &&
-            git pull origin main &&
-            npm install &&
-            pm2 restart all
-          "
+          expect <<EOF
+          spawn ssh -o StrictHostKeyChecking=no adminuser@152.228.214.11
+          expect "password:"
+          send "YOUR_PASSWORD_HERE\r"
+          expect "$ "
+          send "cd /var/www/pelerinage && git pull origin main && npm install && pm2 restart all\r"
+          expect "$ "
+          send "exit\r"
+          expect eof
+          EOF
