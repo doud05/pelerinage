@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const clientController = require('../controllers/clientController');
 
-// Route pour obtenir tous les clients
-router.get('/', clientController.getClients);
+// Route pour récupérer tous les clients
+router.get('/', clientController.getAllClients);
+
+module.exports = router;
 
 // Route pour obtenir un client par ID
 router.get('/:id', clientController.getClientById);
