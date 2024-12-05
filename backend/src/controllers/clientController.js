@@ -3,13 +3,16 @@ const db = require('../config/db');
 // Fonction pour récupérer tous les clients
 const getAllClients = async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM clients'); // Requête SQL pour récupérer tous les clients
-        res.status(200).json(result.rows); // Réponse avec les clients au format JSON
+        console.log('Tentative de récupération des clients...');
+        const result = await pool.query('SELECT * FROM clients');
+        console.log('Clients récupérés :', result.rows);
+        res.status(200).json(result.rows);
     } catch (error) {
         console.error('Erreur lors de la récupération des clients :', error);
         res.status(500).send('Erreur serveur');
     }
 };
+
 
 // Exporter la fonction pour qu'elle soit disponible pour d'autres fichiers
 module.exports = {
